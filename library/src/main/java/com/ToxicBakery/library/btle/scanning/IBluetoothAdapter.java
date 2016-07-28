@@ -14,6 +14,9 @@ import android.support.annotation.RequiresPermission;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Copy of the Android {@link BluetoothAdapter} class as an interface.
+ */
 public interface IBluetoothAdapter {
 
     /**
@@ -26,7 +29,7 @@ public interface IBluetoothAdapter {
      * hardware address, even if this adapter has never seen that device.
      *
      * @param address valid Bluetooth MAC address
-     * @throws IllegalArgumentException if address is invalid
+     * @return the device wrapped by this adapter
      */
     BluetoothDevice getRemoteDevice(String address);
 
@@ -39,7 +42,7 @@ public interface IBluetoothAdapter {
      * hardware address, even if this adapter has never seen that device.
      *
      * @param address Bluetooth MAC address (6 bytes)
-     * @throws IllegalArgumentException if address is invalid
+     * @return the device wrapped by this adapter
      */
     BluetoothDevice getRemoteDevice(byte[] address);
 
@@ -47,15 +50,19 @@ public interface IBluetoothAdapter {
      * Returns a {@link BluetoothLeAdvertiser} object for Bluetooth LE Advertising operations.
      * Will return null if Bluetooth is turned off or if Bluetooth LE Advertising is not
      * supported on this device.
-     * <p/>
+     * <p>
      * Use {@link #isMultipleAdvertisementSupported()} to check whether LE Advertising is supported
      * on this device before calling this method.
+     *
+     * @return the advertiser
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     BluetoothLeAdvertiser getBluetoothLeAdvertiser();
 
     /**
      * Returns a {@link BluetoothLeScanner} object for Bluetooth LE scan operations.
+     *
+     * @return the scanner implementation
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     IBluetoothLeScanner getBluetoothLeScanner();
@@ -148,10 +155,10 @@ public interface IBluetoothAdapter {
 
     /**
      * Starts a scan for Bluetooth LE devices.
-     * <p/>
+     * <p>
      * <p>Results of the scan are reported using the
      * {@link LeScanCallback#onLeScan} callback.
-     * <p/>
+     * <p>
      * <p>Requires {@link Manifest.permission#BLUETOOTH_ADMIN} permission.
      *
      * @param callback the callback LE scan results are delivered
@@ -166,10 +173,10 @@ public interface IBluetoothAdapter {
     /**
      * Starts a scan for Bluetooth LE devices, looking for devices that
      * advertise given services.
-     * <p/>
+     * <p>
      * <p>Devices which advertise all specified services are reported using the
      * {@link LeScanCallback#onLeScan} callback.
-     * <p/>
+     * <p>
      * <p>Requires {@link Manifest.permission#BLUETOOTH_ADMIN} permission.
      *
      * @param serviceUuids Array of services to look for
@@ -184,7 +191,7 @@ public interface IBluetoothAdapter {
 
     /**
      * Stops an ongoing Bluetooth LE device scan.
-     * <p/>
+     * <p>
      * <p>Requires {@link Manifest.permission#BLUETOOTH_ADMIN} permission.
      *
      * @param callback used to identify which scan to stop

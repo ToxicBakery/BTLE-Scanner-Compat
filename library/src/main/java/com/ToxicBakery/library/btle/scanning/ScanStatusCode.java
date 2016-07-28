@@ -8,6 +8,9 @@ import android.support.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+/**
+ * The status of a scan operation.
+ */
 @Retention(RetentionPolicy.SOURCE)
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 @IntDef({
@@ -19,6 +22,9 @@ import java.lang.annotation.RetentionPolicy;
 })
 public @interface ScanStatusCode {
 
+    /**
+     * Indicate the status to be normal.
+     */
     int SCAN_OK = 0;
 
 }

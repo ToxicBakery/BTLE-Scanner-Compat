@@ -39,6 +39,7 @@
     <rule ref="rulesets/java/naming.xml">
         <exclude name="AbstractNaming" />
         <exclude name="LongVariable" />
+        <exclude name="PackageCase" />
         <exclude name="ShortMethodName" />
         <exclude name="ShortVariable" />
         <exclude name="VariableNamingConventions" />

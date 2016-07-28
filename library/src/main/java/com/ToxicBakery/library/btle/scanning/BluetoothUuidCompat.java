@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 The Android Open Source Project
+ * Copyright (C) 2014 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,28 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.UUID;
 
+/**
+ * Static helper methods and constants to decode the ParcelUuid of remote devices.
+ * <p>
+ * This class has been copied from the AOSP code base.
+ *
+ * @see <a href="http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/5.1.1_r1/android/bluetooth/BluetoothUuid.java?av=f">BluetoothUuid.java</a>
+ */
 final class BluetoothUuidCompat {
 
-    static final ParcelUuid BASE_UUID =
-            ParcelUuid.fromString("00000000-0000-1000-8000-00805F9B34FB");
+    static final ParcelUuid BASE_UUID = ParcelUuid.fromString("00000000-0000-1000-8000-00805F9B34FB");
 
-    /** Length of bytes for 16 bit UUID */
+    /**
+     * Length of bytes for 16 bit UUID
+     */
     static final int UUID_BYTES_16_BIT = 2;
-    /** Length of bytes for 32 bit UUID */
+    /**
+     * Length of bytes for 32 bit UUID
+     */
     static final int UUID_BYTES_32_BIT = 4;
-    /** Length of bytes for 128 bit UUID */
+    /**
+     * Length of bytes for 128 bit UUID
+     */
     static final int UUID_BYTES_128_BIT = 16;
 
     private BluetoothUuidCompat() {
@@ -44,15 +56,16 @@ final class BluetoothUuidCompat {
      *
      * @param uuidBytes Byte representation of uuid.
      * @return {@link ParcelUuid} parsed from bytes.
-     * @throws IllegalArgumentException If the {@code uuidBytes} cannot be parsed.
      */
     static ParcelUuid parseUuidFrom(byte[] uuidBytes) {
         if (uuidBytes == null) {
             throw new IllegalArgumentException("uuidBytes cannot be null");
         }
         int length = uuidBytes.length;
-        if (length != UUID_BYTES_16_BIT && length != UUID_BYTES_32_BIT &&
-                length != UUID_BYTES_128_BIT) {
+        if (length != UUID_BYTES_16_BIT
+                && length != UUID_BYTES_32_BIT
+                && length != UUID_BYTES_128_BIT) {
+
             throw new IllegalArgumentException("uuidBytes length invalid - " + length);
         }
 
@@ -71,7 +84,7 @@ final class BluetoothUuidCompat {
             shortUuid = uuidBytes[0] & 0xFF;
             shortUuid += (uuidBytes[1] & 0xFF) << 8;
         } else {
-            shortUuid = uuidBytes[0] & 0xFF ;
+            shortUuid = uuidBytes[0] & 0xFF;
             shortUuid += (uuidBytes[1] & 0xFF) << 8;
             shortUuid += (uuidBytes[2] & 0xFF) << 16;
             shortUuid += (uuidBytes[3] & 0xFF) << 24;

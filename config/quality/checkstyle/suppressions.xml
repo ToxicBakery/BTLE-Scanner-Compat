@@ -29,6 +29,7 @@
     <suppress checks="[a-zA-Z0-9]*" files=".*ViewInjector.java" />
     <suppress checks="[a-zA-Z0-9]*" files=".*_MembersInjector.java" />
 
-    <!-- IAesKey and IRsaKey are intentionally not types -->
-    <suppress checks="InterfaceIsType" files="I(Aes|Rsa)Key.java" />
+    <suppress checks="LineLength" files="BluetoothUuidCompat.java" />
+    <suppress checks="LineLength" files="ScanResultCompat.java" />
+    <suppress checks="UnusedImports" files="IBluetoothAdapter.java" />
 </suppressions>
