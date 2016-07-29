@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="button_scan_start">Start Scanning</string>
+    <string name="button_scan_stop">Stop Scanning</string>
+    <string name="device_display">%1$s (%2$s)</string>
+    <string name="error_no_btle_title">Bluetooth LE Error</string>
+    <string name="error_no_btle_message">Bluetooth LE is not supported on this device.</string>
+</resources>
