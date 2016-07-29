@@ -9,10 +9,19 @@ import android.os.Build;
 
 import java.util.UUID;
 
+/**
+ * Wrapper implementation around {@link BluetoothAdapter}. This is not a testable implementation
+ * as {@link BluetoothAdapter} is final.
+ */
 public class AndroidBluetoothAdapter implements IBluetoothAdapter {
 
     private final BluetoothAdapter bluetoothAdapter;
 
+    /**
+     * Wrap an adapter for use as a BTLE adapter.
+     *
+     * @param bluetoothAdapter to be wrapped
+     */
     public AndroidBluetoothAdapter(BluetoothAdapter bluetoothAdapter) {
         this.bluetoothAdapter = bluetoothAdapter;
     }

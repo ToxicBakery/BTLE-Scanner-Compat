@@ -1,11 +1,22 @@
 package com.ToxicBakery.library.btle.scanning;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
+/**
+ * Binder to a scan service for pre Lollipop devices.
+ */
 class LeScannerBinder extends LeScanCallback {
 
-    final IBluetoothAdapter bluetoothAdapter;
+    private final IBluetoothAdapter bluetoothAdapter;
 
+    /**
+     * Creates the binder for the given callback and device.
+     *
+     * @param scanCallback     results callback
+     * @param bluetoothAdapter device performing the scan
+     */
     LeScannerBinder(@NonNull ILeScanCallback scanCallback,
                     @NonNull IBluetoothAdapter bluetoothAdapter) {
 
@@ -14,7 +25,7 @@ class LeScannerBinder extends LeScanCallback {
         this.bluetoothAdapter = bluetoothAdapter;
     }
 
-    @SuppressWarnings("deprecation")
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @ScanStatusCode
     @Override
     public int stop() {

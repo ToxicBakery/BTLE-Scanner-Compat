@@ -10,14 +10,22 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+/**
+ * Scanner callback delegate.
+ */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 abstract class LeScanCallback extends ScanCallback implements ILeScanBinder {
 
-    final ILeScanCallback scanCallback;
+    private final ILeScanCallback scanCallback;
 
     @ScanStatusCode
-    int errorCode;
+    private int errorCode;
 
+    /**
+     * Create the callback providing a compatible method of generating callbacks events to the UI.
+     *
+     * @param scanCallback the callback for handling results
+     */
     public LeScanCallback(@NonNull ILeScanCallback scanCallback) {
         this.scanCallback = scanCallback;
         errorCode = ScanStatusCode.SCAN_OK;
@@ -62,6 +70,8 @@ abstract class LeScanCallback extends ScanCallback implements ILeScanBinder {
             case ScanSettings.CALLBACK_TYPE_MATCH_LOST:
                 scanCallback.onDeviceLost(scanResultCompat);
                 break;
+            default:
+                // Don nothing
         }
     }
 

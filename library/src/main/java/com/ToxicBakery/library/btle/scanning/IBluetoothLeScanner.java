@@ -10,6 +10,9 @@ import android.support.annotation.RequiresPermission;
 
 import java.util.List;
 
+/**
+ * Interface representing a device capable of performing BTLE scanning functions.
+ */
 public interface IBluetoothLeScanner {
 
     /**
@@ -24,7 +27,6 @@ public interface IBluetoothLeScanner {
      * @param filters  {@link ScanFilter}s for finding exact BLE devices.
      * @param settings Settings for the scan.
      * @param callback Callback used to deliver scan results.
-     * @throws IllegalArgumentException If {@code settings} or {@code callback} is null.
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresPermission(Manifest.permission.BLUETOOTH_ADMIN)

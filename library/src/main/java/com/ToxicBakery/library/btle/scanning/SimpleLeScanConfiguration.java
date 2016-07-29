@@ -14,6 +14,10 @@ import android.support.annotation.VisibleForTesting;
 import com.ToxicBakery.android.version.Is;
 import com.ToxicBakery.android.version.SdkVersion;
 
+/**
+ * Wrapper for {@link ScanSettings} permitting a backwards compatible manner of applying a
+ * configuration to the device.
+ */
 public class SimpleLeScanConfiguration implements ILeScanConfiguration {
 
     @NonNull
@@ -22,6 +26,11 @@ public class SimpleLeScanConfiguration implements ILeScanConfiguration {
     @Nullable
     private final ScanSettings scanSettings;
 
+    /**
+     * Create the configuration using the device default adapter.
+     *
+     * @param context application context
+     */
     @SuppressLint("NewApi")
     public SimpleLeScanConfiguration(@NonNull Context context) {
         BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
@@ -30,6 +39,11 @@ public class SimpleLeScanConfiguration implements ILeScanConfiguration {
         scanSettings = buildScanSettings();
     }
 
+    /**
+     * Create the configuration for the given device.
+     *
+     * @param bluetoothAdapter btle device
+     */
     @SuppressLint("NewApi")
     public SimpleLeScanConfiguration(@NonNull IBluetoothAdapter bluetoothAdapter) {
         this.bluetoothAdapter = bluetoothAdapter;
@@ -49,6 +63,11 @@ public class SimpleLeScanConfiguration implements ILeScanConfiguration {
         return scanSettings;
     }
 
+    /**
+     * Create default scan settings.
+     *
+     * @return default settings
+     */
     @VisibleForTesting
     @SuppressLint("NewApi")
     @Nullable

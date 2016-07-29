@@ -4,10 +4,19 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.NonNull;
 
+/**
+ * Binder to a scan service for Lollipop and newer devices.
+ */
 class LeScannerBinderV21 extends LeScanCallback {
 
-    final IBluetoothLeScanner bluetoothLeScanner;
+    private final IBluetoothLeScanner bluetoothLeScanner;
 
+    /**
+     * Creates teh binder for the given callback and scanner implementation
+     *
+     * @param scanCallback       results callback
+     * @param bluetoothLeScanner scanner to be used for scanning
+     */
     LeScannerBinderV21(@NonNull ILeScanCallback scanCallback,
                        @NonNull IBluetoothLeScanner bluetoothLeScanner) {
 

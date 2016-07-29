@@ -9,10 +9,19 @@ import android.os.Build;
 
 import java.util.List;
 
+/**
+ * Wrapper implementation around {@link BluetoothLeScanner}. This is not a testable implementation
+ * as {@link BluetoothLeScanner} is final.
+ */
 public class AndroidBluetoothLeScanner implements IBluetoothLeScanner {
 
     private final BluetoothLeScanner bluetoothLeScanner;
 
+    /**
+     * Wrap a scanner for use as a BTLE scanner.
+     *
+     * @param bluetoothLeScanner to be wrapper
+     */
     public AndroidBluetoothLeScanner(BluetoothLeScanner bluetoothLeScanner) {
         this.bluetoothLeScanner = bluetoothLeScanner;
     }

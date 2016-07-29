@@ -1,10 +1,10 @@
 package com.ToxicBakery.library.btle.scanning;
 
-import android.annotation.SuppressLint;
-import android.bluetooth.le.BluetoothLeScanner;
+import android.annotation.TargetApi;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanSettings;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.ToxicBakery.android.version.Is;
@@ -13,11 +13,21 @@ import com.ToxicBakery.android.version.SdkVersion;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LeDiscovery {
+/**
+ * Discovery API for initiating a BTLE scan.
+ */
+public final class LeDiscovery {
 
-    LeDiscovery() {
+    private LeDiscovery() {
     }
 
+    /**
+     * Request for BTLE scanning to start.
+     *
+     * @param scanCallback      to send results
+     * @param scanConfiguration configuration for performing scan
+     * @return binder instance for controlling the scan
+     */
     public static ILeScanBinder startScanning(@NonNull ILeScanCallback scanCallback,
                                               @NonNull ILeScanConfiguration scanConfiguration) {
         return startScanning(
@@ -27,7 +37,13 @@ public class LeDiscovery {
         );
     }
 
-    @SuppressLint("InlinedApi")
+    /**
+     * @param scanCallback      to send results
+     * @param scanConfiguration configuration for performing scan
+     * @param scanFilterList    list of devices to scan for or an empty list to scan for any device
+     * @return binder instance for controlling the scan
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressWarnings("deprecation")
     public static ILeScanBinder startScanning(@NonNull ILeScanCallback scanCallback,
                                               @NonNull ILeScanConfiguration scanConfiguration,
