@@ -35,9 +35,19 @@ import java.util.List;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
+/**
+ * Activity displaying a scan button and list for results.
+ */
 public class ActivityMain extends AppCompatActivity implements View.OnClickListener, ILeScanCallback {
 
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "ActivityMain";
+
+    /**
+     * Request code for activity results
+     */
     private static final int REQUEST_PERMISSIONS = 1001;
 
     private Button buttonScan;
@@ -136,11 +146,19 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
     }
 
+    /**
+     * Request scanning to start or stop.
+     */
     void requestToggleScan() {
-        toggleScan();
+        ScanSingleton.getInstance(getApplicationContext())
+                .toggleScanning();
+
         updateUI();
     }
 
+    /**
+     * Update the UI to reflect the scan state.
+     */
     void updateUI() {
         boolean scanning = ScanSingleton.getInstance(getApplicationContext())
                 .isScanning();
@@ -153,6 +171,9 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Display a warning to the user if the device does not support Bluetooth LE.
+     */
     void warnBtleSupport() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.error_no_btle_title)
@@ -160,21 +181,25 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
                 .show();
     }
 
-    void toggleScan() {
-        ScanSingleton.getInstance(getApplicationContext())
-                .toggleScanning();
-    }
-
+    /**
+     * Request location permission. This is required to use Bluetooth LE on a device.
+     */
     void requestPermission() {
         ActivityCompat.requestPermissions(this,
                 new String[]{ACCESS_COARSE_LOCATION},
                 REQUEST_PERMISSIONS);
     }
 
+    /**
+     * Recycler adapter for displaying device results.
+     */
     static class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         private final List<ScanResultCompat> scanResults;
 
+        /**
+         * Create the adapter using an internal list of results that can be added to and removed.
+         */
         public Adapter() {
             scanResults = new ArrayList<>();
         }
@@ -197,28 +222,51 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
             return scanResults.size();
         }
 
+        /**
+         * Add a scan result to the display.
+         *
+         * @param scanResultCompat to be displayed
+         */
         void addResult(ScanResultCompat scanResultCompat) {
             if (!scanResults.contains(scanResultCompat)) {
                 scanResults.add(scanResultCompat);
             }
         }
 
+        /**
+         * Remove a scan result from the display.
+         *
+         * @param scanResultCompat to be removed from display
+         */
         void removeResult(ScanResultCompat scanResultCompat) {
             scanResults.remove(scanResultCompat);
         }
 
     }
 
+    /**
+     * Recycler ViewHolder for displaying the device name and address.
+     */
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView textView;
 
+        /**
+         * Create the holder from the given view
+         *
+         * @param itemView view to hold
+         */
         public ViewHolder(View itemView) {
             super(itemView);
 
-            textView = (TextView) itemView.findViewById(android.R.id.text1);
+            textView = (TextView) itemView.findViewById(R.id.scan_result_view);
         }
 
+        /**
+         * Bind the result to the view.
+         *
+         * @param scanResultCompat to bind
+         */
         public void bind(ScanResultCompat scanResultCompat) {
             BluetoothDevice device = scanResultCompat.getDevice();
             String deviceName = device.getName();
@@ -231,10 +279,15 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     * Simple scan wrapper that survives rotations. Replace this with a Dagger 2 singleton or at
+     * the very least move it to its own class file.
+     */
+    @MainThread
     static class ScanSingleton {
 
         @Nullable
-        private static ScanSingleton instance;
+        private static volatile ScanSingleton instance;
 
         @NonNull
         private Context context;
@@ -242,10 +295,22 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
         private ILeScanBinder leScanBinder;
         private ILeScanCallback scanCallback;
 
-        public ScanSingleton(@NonNull Context context) {
+        /**
+         * Create the scan instance.
+         *
+         * @param context application context
+         */
+        private ScanSingleton(@NonNull Context context) {
             this.context = context.getApplicationContext();
         }
 
+        /**
+         * Get or create the scan intance.
+         *
+         * @param context application context
+         * @return the scan instance
+         */
+        @SuppressWarnings("ConstantConditions")
         @NonNull
         static ScanSingleton getInstance(@NonNull Context context) {
             if (instance == null) {
@@ -268,11 +333,18 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
             return leScanBinder != null;
         }
 
-        void setLeScanCallback(ILeScanCallback scanCallback) {
+        /**
+         * The callback for listening to results.
+         *
+         * @param scanCallback for listening to results or null to stop
+         */
+        void setLeScanCallback(@Nullable ILeScanCallback scanCallback) {
             this.scanCallback = scanCallback;
         }
 
-        @MainThread
+        /**
+         * Toggle scanning by either stopping the binder or creating a new scan instance.
+         */
         void toggleScanning() {
             if (isScanning()) {
                 leScanBinder.stop();
