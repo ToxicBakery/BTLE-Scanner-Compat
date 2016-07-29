@@ -27,11 +27,10 @@ public class SimpleLeScanConfiguration implements ILeScanConfiguration {
     private final ScanSettings scanSettings;
 
     /**
-     * Create the configuration using the device default adapter.
+     * Create the configuration using the device default adapter and an all devices scan configuration.
      *
      * @param context application context
      */
-    @SuppressLint("NewApi")
     public SimpleLeScanConfiguration(@NonNull Context context) {
         BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter systemBluetoothAdapter = bluetoothManager.getAdapter();
@@ -40,7 +39,7 @@ public class SimpleLeScanConfiguration implements ILeScanConfiguration {
     }
 
     /**
-     * Create the configuration for the given device.
+     * Create the configuration for the given device and an all devices scan configuration.
      *
      * @param bluetoothAdapter btle device
      */
@@ -68,8 +67,8 @@ public class SimpleLeScanConfiguration implements ILeScanConfiguration {
      *
      * @return default settings
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @VisibleForTesting
-    @SuppressLint("NewApi")
     @Nullable
     ScanSettings buildScanSettings() {
         if (Is.greaterThanOrEqual(SdkVersion.LOLLIPOP)) {

@@ -25,6 +25,7 @@ class LeScannerBinder extends LeScanCallback {
         this.bluetoothAdapter = bluetoothAdapter;
     }
 
+    @SuppressWarnings("deprecation")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @ScanStatusCode
     @Override

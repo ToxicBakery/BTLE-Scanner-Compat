@@ -71,7 +71,7 @@ abstract class LeScanCallback extends ScanCallback implements ILeScanBinder {
                 scanCallback.onDeviceLost(scanResultCompat);
                 break;
             default:
-                // Don nothing
+                throw new IllegalArgumentException("Unexpected callback type " + callbackType);
         }
     }
 
