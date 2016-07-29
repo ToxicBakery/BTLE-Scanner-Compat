@@ -2,14 +2,9 @@ language: android
 
 sudo: false
 
-env:
-  global:
-    secure: NSSCW9URwDkxqX/TPuoGVt2zwuZqS/pD0VZCeBidMaghE5+Q5SEnul4gLbPrdQGuuBDAK9wS6bAjC+mfPZQwWtf6Jw5Of19HEBjQH0SgCcRKztXeQMBTf6fsJ2h8cjaWwHaWQKyucmH5qBcFtnytFnPECGD/rKJrMlInoPam54CUfnBiEFQ+Zsn6iYHhscRTV8QMDT+a4JHBoFeandDweRY3bDc0XkV3c14iH1VsQW2jJLpP/iuIFwVjRui0IzBF8UHr2hgFN61awVJ5APGI+R11NDKDtwUlTd6qsjix3wblgoxLEa4gX/ti5tOXyDhbQYI5VWp0gV6V/HS+Wg5tgQqNfd1PE/1AfJ1fvUEky6yhtCcj3327al5i6uHlXRq7jpw9KEPW2JKsTeey23QpRFyZbgsfcQfVk0VfWKOvVvQy9WwE9e5vH9UQKd/XbHxuZn+UGxacERzo8jQwhXxworYlr6tt0pRj1RN5Or01p4vMwDsyCJ7Bz0O2AM3qR+QUNvi26XGvWcIWxNJutJxsobKjDp6AygYh9tAQIfED+rjImYn96Hf0dsmDSjQY961gU8wrcp71/7VgfEKy/0d2tOvqzmzgUrtcVhi9fuPu9GOYZIgQnvU/zfNzfo+JoqYYJ1DlHoyuUOMtJefg4q/fs5lGrDJp4hyuTK/Wo0H/7Sw=
-
 before_install:
     - openssl aes-256-cbc -K $encrypted_e2d0f76750b6_key -iv $encrypted_e2d0f76750b6_iv -in maven.keystore.gpg.enc -out maven.keystore.gpg -d
     - chmod +x gradlew
-    - chmod a+x automerge
 
 jdk:
     - oraclejdk8
@@ -32,9 +27,6 @@ script:
 
 install:
     - true
-
-after_success:
-  - "BRANCHES_TO_MERGE_REGEX='^feature/' BRANCH_TO_MERGE_INTO=master GITHUB_REPO=ToxicBakery/BTLE-Scanner-Compat ./automerge"
 
 notifications:
     email:
