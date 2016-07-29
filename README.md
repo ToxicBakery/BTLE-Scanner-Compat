@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ToxicBakery/BTLE-Scanner-Compat.svg?branch=master)](https://travis-ci.org/ToxicBakery/BTLE-Scanner-Compat)
+
 BTLE Scanner Compat
 ===================
 
