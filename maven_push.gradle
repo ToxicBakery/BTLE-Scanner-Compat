@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Toxic Bakery
+ * Copyright 2016 Toxic Bakery
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,29 +95,27 @@ afterEvaluate { project ->
     }
 
     signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
         sign configurations.archives
     }
 
     task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.java.sourceFiles
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
 
-    task androidJavadocsJar(type: Jar) {
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
         classifier = 'javadoc'
-        //basename = artifact_id
         from androidJavadocs.destinationDir
     }
 
     task androidSourcesJar(type: Jar) {
         classifier = 'sources'
-        //basename = artifact_id
         from android.sourceSets.main.java.sourceFiles
     }
 
     artifacts {
-        //archives packageReleaseJar
         archives androidSourcesJar
-        archives androidJavadocsJar
+//        archives androidJavadocsJar
     }
+
 }
