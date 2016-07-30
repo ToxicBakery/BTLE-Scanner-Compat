@@ -9,7 +9,7 @@ Utility library for simplifying BTLE scanning for API 19 and up. By using compat
 
 Add gradle dependency to your application.
 ```gradle
-compile 'com.ToxicBakery.library.btle.scanning:library:1.0.0@aar'
+compile 'com.ToxicBakery.library.btle.scanning:btle-Scanner-Compat:+'
 ```
 
 After configuration, optionally use the [SimpleLeScanConfiguration](https://github.com/ToxicBakery/BTLE-Scanner-Compat/blob/master/library/src/main/java/com/ToxicBakery/library/btle/scanning/SimpleLeScanConfiguration.java) implementation to initiate a configured BTLE scan.
