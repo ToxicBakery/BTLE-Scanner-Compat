@@ -20,8 +20,6 @@ import android.bluetooth.BluetoothDevice;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Objects;
-
 /**
  * ScanResult for Bluetooth LE scan.
  * <p>
@@ -141,7 +139,7 @@ public class ScanResultCompat implements Parcelable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mDevice, mRssi, mTimestampNanos);
+        return (mDevice == null ? "" : mDevice.getAddress()).hashCode();
     }
 
     @Override
@@ -154,8 +152,8 @@ public class ScanResultCompat implements Parcelable {
         }
 
         ScanResultCompat other = (ScanResultCompat) obj;
-        String a1 = mDevice.getAddress();
-        String a2 = other.mDevice.getAddress();
+        String a1 = mDevice == null ? "" : mDevice.getAddress();
+        String a2 = other.mDevice == null ? "" : other.mDevice.getAddress();
         return a1.equals(a2);
     }
 
