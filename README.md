@@ -28,4 +28,4 @@ SimpleLeScanConfiguration scanConfiguration = new SimpleLeScanConfiguration(cont
 ILeScanBinder leScanBinder = LeDiscovery.startScanning(leScanCallback, scanConfiguration);
 ```
 
-Note that `ScanResultCompat` implements a `hashCode()` and `equals(Object)` so it may be used in common Java data types such as maps, sets, and collections.
+Note that `ScanResultCompat` implements `hashCode()` and `equals(Object)` so it may be used in common Java data types such as maps, sets, and collections.
