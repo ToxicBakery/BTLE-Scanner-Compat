@@ -31,7 +31,7 @@ task checkstyle(type: Checkstyle) {
     classpath = files()
 }
 
-task findbugs(type: FindBugs, dependsOn: project.assembleDebug) {
+task findbugs(type: FindBugs, dependsOn: project.assemble) {
     ignoreFailures = true
     effort = "max"
     reportLevel = "high"

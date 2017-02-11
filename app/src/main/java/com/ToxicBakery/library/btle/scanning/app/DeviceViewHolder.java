@@ -1,4 +1,4 @@
-package com.ToxicBakery.library.gotenna.app;
+package com.ToxicBakery.library.btle.scanning.app;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.v7.widget.RecyclerView;

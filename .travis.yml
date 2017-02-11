@@ -1,32 +1,37 @@
 language: android
 
-sudo: false
+sudo: required
+
+services:
+  - docker
 
 before_install:
-    - openssl aes-256-cbc -K $encrypted_e2d0f76750b6_key -iv $encrypted_e2d0f76750b6_iv -in maven.keystore.gpg.enc -out maven.keystore.gpg -d
+    # Prepare the environment
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then openssl aes-256-cbc -K $encrypted_e2d0f76750b6_key -iv $encrypted_e2d0f76750b6_iv -in maven.keystore.gpg.enc -out maven.keystore.gpg -d; fi'
+    - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
+    - echo "TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST}"
+    - echo "TRAVIS_TAG=${TRAVIS_TAG}"
+    - echo "TRAVIS_BUILD_NUMBER=${TRAVIS_BUILD_NUMBER}"
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then echo -e "android.signingConfigs.release.keyAlias=${signing_keyId}" >> "gradle.properties"; fi'
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then echo -e "android.signingConfigs.release.storePassword=${signing_password}" >> "gradle.properties"; fi'
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then echo -e "android.signingConfigs.release.keyPassword=${signing_password}" >> "gradle.properties"; fi'
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then echo -e "android.signingConfigs.release.storeFile=../maven.keystore.gpg" >> "gradle.properties"; fi'
+    - echo -e "travisBuildNumber=${TRAVIS_BUILD_NUMBER}" >> "gradle.properties"
+
+    # Define the gradle tasks to be executed
+    - gradleTasks="clean check"
+    - 'if [[ "$TRAVIS_TAG" ]]; then gradleTasks="$gradleTasks :btle-scanner-compat:publish"; fi'
+
+    # Prepare the wrapper
     - chmod +x gradlew
 
-jdk:
-    - oraclejdk8
-
-android:
-  components:
-    - tools
-    - android-23
-    - build-tools-23.0.2
-    - extra-android-m2repository
+    # Start docker image
+    - docker pull gentlebreeze/android-build-image:1.465
+    - docker run -d --name="android-build-image" -v "${PWD}:/target" -w "/target" gentlebreeze/android-build-image:1.465
 
 script:
-    - echo "Travis branch is $TRAVIS_BRANCH"
-    - echo "Travis branch is in pull request? $TRAVIS_PULL_REQUEST"
-    - echo "Travis tag $TRAVIS_TAG"
-    - echo -e "signing.keyId=${signing_keyId}" >> "gradle.properties"
-    - echo -e "signing.password=${signing_password}" >> "gradle.properties"
-    - echo -e "signing.secretKeyRingFile=../maven.keystore.gpg" >> "gradle.properties"
-    - gradle clean assemble check uploadArchives --continue --stacktrace
-
-install:
-    - true
+    # Execute
+    - docker exec android-build-image /bin/bash -c "./gradlew $gradleTasks -Pprofile=sources,javadoc --continue --stacktrace"
 
 notifications:
     email:

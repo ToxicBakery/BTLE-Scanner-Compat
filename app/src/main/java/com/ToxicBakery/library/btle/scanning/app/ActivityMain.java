@@ -1,4 +1,4 @@
-package com.ToxicBakery.library.gotenna.app;
+package com.ToxicBakery.library.btle.scanning.app;
 
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -24,6 +25,8 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
  * Activity displaying a scan button and list for results.
  */
 public class ActivityMain extends AppCompatActivity implements View.OnClickListener, ILeScanCallback {
+
+    private static final String TAG = "ActivityMain";
 
     /**
      * Request code for activity results
@@ -41,7 +44,8 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
 
         adapter = new DeviceAdapter();
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -57,7 +61,9 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.button_scan:
                 if (Is.greaterThanOrEqual(Build.VERSION_CODES.M)) {
-                    int permission = ContextCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION);
+                    int permission
+                            = ContextCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION);
+
                     if (permission != PackageManager.PERMISSION_GRANTED) {
                         requestPermission();
                     } else {
@@ -67,11 +73,15 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
                     requestToggleScan();
                 }
                 break;
+            default:
+                Log.w(TAG, "Unhandled click: " + v.getId());
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_PERMISSIONS:
                 for (int result : grantResults) {
@@ -82,6 +92,8 @@ public class ActivityMain extends AppCompatActivity implements View.OnClickListe
 
                 requestToggleScan();
                 break;
+            default:
+                Log.w(TAG, "Unhandled result: " + requestCode);
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

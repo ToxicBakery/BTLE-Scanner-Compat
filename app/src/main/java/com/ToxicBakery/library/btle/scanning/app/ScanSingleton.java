@@ -1,5 +1,6 @@
-package com.ToxicBakery.library.gotenna.app;
+package com.ToxicBakery.library.btle.scanning.app;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -18,13 +19,14 @@ import com.ToxicBakery.library.btle.scanning.SimpleLeScanConfiguration;
  * Simple scan wrapper to aid in retaining state.
  */
 @MainThread
-class ScanSingleton {
+final class ScanSingleton {
 
     /**
      * Log tag.
      */
     private static final String TAG = "ScanSingleton";
 
+    @SuppressLint("StaticFieldLeak")
     @Nullable
     private static volatile ScanSingleton instance;
 
