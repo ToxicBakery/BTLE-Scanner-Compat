@@ -26,12 +26,11 @@ before_install:
     - chmod +x gradlew
 
     # Start docker image
-    - docker pull gentlebreeze/android-build-image:1.465
-    - docker run -d --name="android-build-image" -v "${PWD}:/target" -w "/target" gentlebreeze/android-build-image:1.465
+    - docker run -d --name="android-build-image" -v "${PWD}:/target" -w "/target" -t toxicbakery/alpine-glibc-android:release-1.0.0 /bin/sh
 
 script:
     # Execute
-    - docker exec android-build-image /bin/bash -c "./gradlew $gradleTasks -Pprofile=sources,javadoc --continue --stacktrace"
+    - docker exec android-build-image /bin/sh -c "./gradlew $gradleTasks -Pprofile=sources,javadoc --continue --stacktrace"
 
 notifications:
     email:
