@@ -17,10 +17,11 @@ before_install:
     - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then echo -e "android.signingConfigs.release.keyPassword=${signing_password}" >> "gradle.properties"; fi'
     - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then echo -e "android.signingConfigs.release.storeFile=../maven.keystore.gpg" >> "gradle.properties"; fi'
     - echo -e "travisBuildNumber=${TRAVIS_BUILD_NUMBER}" >> "gradle.properties"
+    - echo -e "travisBranch=${TRAVIS_BRANCH}" >> "gradle.properties"
 
     # Define the gradle tasks to be executed
     - gradleTasks="clean check"
-    - 'if [[ "$TRAVIS_TAG" ]]; then gradleTasks="$gradleTasks :btle-scanner-compat:publish"; fi'
+    - 'if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then gradleTasks="$gradleTasks :btle-scanner-compat:publish"; fi'
 
     # Prepare the wrapper
     - chmod +x gradlew

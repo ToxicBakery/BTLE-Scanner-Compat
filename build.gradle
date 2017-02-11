@@ -16,9 +16,20 @@ allprojects {
     }
 
     project.version = project.property("android.versionName") +
-            (project.hasProperty("travisBuildNumber") ? project.property("travisBuildNumber") : "0")
+            (project.hasProperty("travisBuildNumber") ? project.property("travisBuildNumber") : "0") +
+            (isSnapshot() ? "-SNAPSHOT" : "")
 
     project.group = project.property("pom.groupId")
 
     apply from: "${rootDir}/gradle-fury/gradle/maven-support.gradle"
+}
+
+boolean isSnapshot() {
+    def releaseBranches = ["master"].toList()
+    def isReleaseBranch = project.hasProperty("travisBranch") && releaseBranches.contains(project.property("travisBranch"))
+    return !(isReleaseBranch || isTag())
+}
+
+boolean isTag() {
+    return project.hasProperty("travisTag") && !project.property("TRAVIS_TAG").toString().empty
 }
